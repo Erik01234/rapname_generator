@@ -19,7 +19,7 @@ async def read_item(payload: MessagePayload):
     toReturn = []
     for _ in range(int(payload.howmany)):
         toReturn.append(generate_rap_name(first_name=payload.firstname, last_initial=payload.lastinitial, gender=payload.gender))
-    return {"reply": f"{toReturn}"}
+    return {"reply": toReturn}
 
 
 import random

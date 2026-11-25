@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 export default function App() {
   const [message, setMessage] = useState('Connecting to backend...');
+  const [rappernames, setRapperNames] = useState([]);
 
   const [firstName, setFirstName] = useState("Rick");
   const [lastInitial, setLastInitial] = useState("F");
@@ -11,7 +12,7 @@ export default function App() {
   useEffect(() => {
     fetch('/api/ping')
       .then((res) => res.json())
-      .then((data) => setMessage(data.status))
+      .then((data) => setMessage("Successfully connected to backend"))
       .catch(() => setMessage('Error connecting to backend'));
   }, []);
 
@@ -29,25 +30,55 @@ export default function App() {
       }),
     });
     const data = await response.json();
-    setMessage(data.reply)
+    setRapperNames(data.reply);
+  };
+
+  const handleBlur = () => {
+    if (howmany == "") {
+      sethowmany("5");
+    };
+    if (firstName == "") {
+      setFirstName("Rick");
+    };
+    if (lastInitial == "") {
+      setLastInitial("F");
+    };
   };
 
   return <>
-    <p>Select gender:</p>
-    <select value={gender} onChange={e => setGender(e.target.value)}>
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-    </select>
-    <br />
-    <p>First name: {firstName}</p>
-    <input onChange={e => setFirstName(e.target.value)}></input>
-    <br />
-    <p>Last name initial: {lastInitial}</p>
-    <input onChange={e => setLastInitial(e.target.value)}></input>
-    <br />
-    <p>How many?: {howmany}</p>
-    <input onChange={e => sethowmany(e.target.value)}></input>
-    <button onClick={sendPayload}>Get my rap name</button>
-    <p>{message}</p>
+    <div style={{}}>
+      <p>First name:</p>
+      <input onKeyDown={(event) => {
+        if (event.key == " ") {
+          event.preventDefault();
+        }
+      }
+      } value={firstName} onChange={e => setFirstName(e.target.value)} onBlur={handleBlur} style={{ width: "200px" }}></input >
+
+      <p>Last name initial:</p>
+      <input maxLength={1} value={lastInitial} onChange={e => setLastInitial(e.target.value)} onBlur={handleBlur} style={{ width: "30px" }}></input>
+      <br />
+      <p>How many?:</p>
+      <input onKeyDown={(event) => {
+        if (!/[0-9]/.test(event.key)) {
+          if (event.key != "Backspace") {
+            event.preventDefault();
+          }
+        }
+      }} value={howmany} max={10} onChange={e => sethowmany(e.target.value)} onBlur={handleBlur} style={{ width: "30px" }}></input>
+      <br />
+      <p>Select gender:</p>
+      <select value={gender} onChange={e => setGender(e.target.value)} style={{ width: "100px" }}>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <br />
+      <button onClick={sendPayload}>Get my rap name</button>
+      <p>{message}</p>
+      <br />
+      <ul style={{ listStyleType: "none", padding: "0px", margin: "0px" }}>
+        {rappernames.map((name) => <li>{name}</li>)}
+      </ul>
+    </div>
   </>;
 }
