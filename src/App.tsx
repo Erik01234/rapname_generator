@@ -12,7 +12,7 @@ export default function App() {
   useEffect(() => {
     fetch('/api/ping')
       .then((res) => res.json())
-      .then((data) => setMessage("Successfully connected to backend"))
+      .then(() => setMessage("Successfully connected to backend"))
       .catch(() => setMessage('Error connecting to backend'));
   }, []);
 
