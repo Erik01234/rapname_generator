@@ -9,4 +9,4 @@ def read_root():
 
 @app.get("/api/ping")
 def read_item():
-    return {"status": "OK"}
+    return {"status": "Fasz"}
