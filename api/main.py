@@ -86,7 +86,7 @@ DEFAULT_WORD_BANKS: Dict[str, List[str]] = {
         "Cop", "Dawg", "Fade", "Fly", "Game", "Herb", "Piece", "Playa",
         "Shank", "Shorty", "Skeezer", "Whip", "Rizz", "Aura", "Gyatt",
         "Crib", "Scrub", "N*gga", "Digga", "Don", "Hottie", "Hustler",
-        "Pussy", "Head", "Ride", "Monster", "Piece"
+        "Pussy", "Head", "Ride", "Monster",
         "Reaper", "Demon", "Beast", 
         "Hit", "Shot", "Slug", "Clip", "Trigger",
         "Riot", "Chaos", "Mayhem", "Wrath", "Fury", "Rage", "Venom",
