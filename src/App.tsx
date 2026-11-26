@@ -56,7 +56,7 @@ export default function App() {
   };
 
   return <>
-    <h2>Welcome to MyRapName.com</h2>
+    <h2>Welcome to <a href="https://www.pornhub.com" target='_blank' style={{ textDecoration: "none", color: "black" }}>rapnamegenerator.vercel.app</a></h2>
     <p>Now everyone can have a rap name thanks to our free rap name generator. Having the right name is essential whether you are DJing, Emceeing, beatboxing, graffiti painting, break dancing, or just sitting at your desk. Our rap name maker is based on an advanced rules engine to give you personalized results superior to anything else on the web. To get started simply enter your first name and the first initial of your last name. Then choose whether you want a male rapper name or a female rapper name. If you don't like our first suggestion, try it again. Enjoy.</p>
     <div style={{ maxWidth: "640px" }}>
       <img src={image} width={640} alt="Bea$t mode ahh gansta pic" />
@@ -110,5 +110,147 @@ export default function App() {
       <img src={freestuff} width={150} alt=";)" />
       <img src={southpark} width={150} alt="Haha funny mert Cartman" />
     </footer>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />Fucking Idiot
   </>;
 }
