@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import type { MouseEvent } from 'react';
 import image from './image.png';
 import image2 from './image2.png';
 import csingcsong from './csingcsong.gif';
@@ -12,12 +13,26 @@ import southpark from "./southpark.gif"
 
 export default function App() {
   const [message, setMessage] = useState('Connecting to backend...');
-  const [rappernames, setRapperNames] = useState([]);
+  const [rappernames, setRapperNames] = useState<string[]>([]);
 
   const [firstName, setFirstName] = useState("Rick");
   const [lastInitial, setLastInitial] = useState("F");
   const [gender, setGender] = useState('male');
   const [howmany, sethowmany] = useState("5");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [visitors] = useState(() => {
+    const n = Number(localStorage.getItem("visitors") ?? 4216) + 1;
+    localStorage.setItem("visitors", String(n));
+    return n;
+  });
+  const [sparkles, setSparkles] = useState<{ id: number; x: number; y: number }[]>([]);
+
+  const trail = (e: MouseEvent) => {
+    const id = Date.now() + Math.random();
+    setSparkles((s) => [...s.slice(-12), { id, x: e.clientX, y: e.clientY }]);
+    setTimeout(() => setSparkles((s) => s.filter((p) => p.id !== id)), 800);
+  };
 
   useEffect(() => {
     fetch('/api/ping')
@@ -27,20 +42,28 @@ export default function App() {
   }, []);
 
   const sendPayload = async () => {
-    const response = await fetch('/api/ping', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        firstname: firstName,
-        lastinitial: lastInitial,
-        gender: gender,
-        howmany: howmany
-      }),
-    });
-    const data = await response.json();
-    setRapperNames(data.reply);
+    setLoading(true);
+    setRapperNames([]);
+    try {
+      const response = await fetch('/api/ping', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstname: firstName,
+          lastinitial: lastInitial,
+          gender: gender,
+          howmany: String(Math.min(Number(howmany) || 5, 10))
+        }),
+      });
+      if (!response.ok) throw new Error(String(response.status));
+      const data = await response.json();
+      await new Promise((r) => setTimeout(r, 1500));
+      setRapperNames(data.reply);
+    } catch {
+      setError("MyRapName.exe has performed an illegal operation and will be shut down. (Could not reach the advanced rules engine.)");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBlur = () => {
@@ -55,15 +78,19 @@ export default function App() {
     };
   };
 
-  return <>
-    <h2>Welcome to MyRapName.com</h2>
-    <p>Now everyone can have a rap name thanks to our free rap name generator. Having the right name is essential whether you are DJing, Emceeing, beatboxing, graffiti painting, break dancing, or just sitting at your desk. Our rap name maker is based on an advanced rules engine to give you personalized results superior to anything else on the web. To get started simply enter your first name and the first initial of your last name. Then choose whether you want a male rapper name or a female rapper name. If you don't like our first suggestion, try it again. Enjoy.</p>
+  return <div onMouseMove={trail}>
+    {sparkles.map((p) => <span key={p.id} className="sparkle" style={{ left: p.x, top: p.y }}>✨</span>)}
+    {error && <div className="win"><div className="title">MyRapName.exe</div><div className="body">⛔ {error}<br /><br /><button onClick={() => setError("")}>OK</button></div></div>}
+    <div className="marquee"><span>*** NOW WITH 100% MORE ADVANCED RULES ENGINE *** #1 RAP NAME SITE ON THE WEB *** FREE FREE FREE ***</span></div>
+    <h2 className="wordart">Welcome to MyRapName.com</h2>
+    <p style={{ textAlign: "center" }}>🚧 <span className="blink">NEW!</span> UNDER CONSTRUCTION 🚧</p>
+    <p className="panel">Now everyone can have a rap name thanks to our free rap name generator. Having the right name is essential whether you are DJing, Emceeing, beatboxing, graffiti painting, break dancing, or just sitting at your desk. Our rap name maker is based on an advanced rules engine to give you personalized results superior to anything else on the web. To get started simply enter your first name and the first initial of your last name. Then choose whether you want a male rapper name or a female rapper name. If you don't like our first suggestion, try it again. Enjoy.</p>
     <div style={{ maxWidth: "640px" }}>
       <img src={image} width={640} alt="Bea$t mode ahh gansta pic" />
       <br />
       <img src={image2} width={150} style={{ float: "right" }} alt="Guess who's got ligma?" />
     </div>
-    <div style={{}}>
+    <div className="panel">
       <p style={{ display: "inline" }}>First Name:</p>
       <input onKeyDown={(event) => {
         if (event.key == " ") {
@@ -91,12 +118,19 @@ export default function App() {
       }} value={howmany} max={10} onChange={e => sethowmany(e.target.value)} onBlur={handleBlur} style={{ width: "30px" }}></input>
       <br />
       <br />
-      <button onClick={sendPayload}>Get my rap name</button>
+      <button className="bevel" onClick={sendPayload} disabled={loading}>Get my rap name!!!</button>
       <p>{message}</p>
+      {loading && <div><p>Consulting the advanced rules engine...</p><div className="bar"><div /></div></div>}
       <br />
-      <ul style={{ listStyleType: "none", padding: "0px", margin: "0px" }}>
-        {rappernames.map((name) => <li>{name}</li>)}
-      </ul>
+      {rappernames.length > 0 && <div className="cert">
+        <p>🏆 Certified by the Rap Name Institute 🏆</p>
+        <ul style={{ listStyleType: "none", padding: "0px", margin: "0px" }}>
+          {rappernames.map((name, i) => <li key={i}>{name}</li>)}
+        </ul>
+        <p>★★★★★ Rated 5/5 by 12 satisfied customers</p>
+        <button className="bevel" onClick={() => window.print()}>Print your rap name</button>
+        <p>By generating a rap name you agree that your rap name is final.</p>
+      </div>}
       <br />
     </div>
     <footer style={{ display: "flex", flexWrap: "wrap", gap: "10px", width: "640px" }}>
@@ -110,5 +144,12 @@ export default function App() {
       <img src={freestuff} width={150} alt=";)" />
       <img src={southpark} width={150} alt="Haha funny mert Cartman" />
     </footer>
-  </>;
+    <p style={{ textAlign: "center" }}>You are visitor #<span className="counter">{String(visitors).padStart(6, "0")}</span></p>
+    <p style={{ textAlign: "center" }}>
+      <span className="blink">NEW!</span> <a href="#guestbook">Sign my guestbook!</a><br />
+      Best viewed in Internet Explorer 6 at 800x600<br />
+      Last updated: 11/03/2003<br />
+      &lt; <a href="#prev">Prev</a> | <a href="#random">Random</a> | <a href="#next">Next</a> &gt; Rap Name Web Ring
+    </p>
+  </div>;
 }

@@ -17,7 +17,7 @@ class MessagePayload(BaseModel):
 @app.post("/api/ping")
 async def read_item(payload: MessagePayload):
     toReturn = []
-    for _ in range(int(payload.howmany)):
+    for _ in range(max(1, min(int(payload.howmany or 5), 10))):
         toReturn.append(generate_rap_name(first_name=payload.firstname, last_initial=payload.lastinitial, gender=payload.gender))
     return {"reply": toReturn}
 
@@ -137,7 +137,8 @@ def build_name_variants(first_name: str, last_initial: Optional[str] = None, gen
     lower = clean_first.lower()
     if not lower.endswith(("a", "e", "i", "o", "u")):
         names.add(f"{clean_first}y")
-        names.add(f"{clean_first}y {last_init}")
+        if last_init:
+            names.add(f"{clean_first}y {last_init}")
 
     if gender == "male":
         names.add(clean_first+"-san")
